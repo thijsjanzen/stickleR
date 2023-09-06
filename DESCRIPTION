@@ -1,12 +1,16 @@
 Package: stickleR
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Analyze data
 Version: 0.1.0
-Author: Who wrote it
+Author: Thijs Janzen
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: What license is it under?
+LinkingTo: 
+    Rcpp
+Depends:
+    Rcpp
 Imports: 
   dplyr,
   magrittr,
