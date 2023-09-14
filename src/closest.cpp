@@ -37,7 +37,6 @@ std::vector<double> get_all_locations_cpp(double max_sec,
     sites[i] = find_site(antennae[i], site_map);
   }
 
-
   std::vector<double> out(max_sec, 0);
   // starting bit, extrapolating from first read
   for (int t = 0; t < times.front(); ++t) {
@@ -60,7 +59,3 @@ std::vector<double> get_all_locations_cpp(double max_sec,
 
   return out;
 }
-
-
-
-
