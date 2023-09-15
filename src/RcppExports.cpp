@@ -10,17 +10,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// update_rates_cpp
-std::vector<double> update_rates_cpp(double x);
-RcppExport SEXP _stickleR_update_rates_cpp(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(update_rates_cpp(x));
-    return rcpp_result_gen;
-END_RCPP
-}
 // get_all_locations_cpp
 std::vector<double> get_all_locations_cpp(double max_sec, const std::vector<double>& times, const std::vector<double>& antennae, const Rcpp::NumericMatrix& site_map);
 RcppExport SEXP _stickleR_get_all_locations_cpp(SEXP max_secSEXP, SEXP timesSEXP, SEXP antennaeSEXP, SEXP site_mapSEXP) {
@@ -51,7 +40,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_stickleR_update_rates_cpp", (DL_FUNC) &_stickleR_update_rates_cpp, 1},
     {"_stickleR_get_all_locations_cpp", (DL_FUNC) &_stickleR_get_all_locations_cpp, 4},
     {"_stickleR_make_matrix_class", (DL_FUNC) &_stickleR_make_matrix_class, 4},
     {NULL, NULL, 0}
