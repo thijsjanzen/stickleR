@@ -4,7 +4,7 @@
 \alias{get_all_locations_cpp}
 \title{function to get all locations}
 \usage{
-get_all_locations_cpp(max_sec, times, antennae, site_map)
+get_all_locations_cpp(max_sec, times, antennae, site_map, prev_day_location)
 }
 \arguments{
 \item{max_sec}{maxsec}

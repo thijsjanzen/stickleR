@@ -11,8 +11,8 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // get_all_locations_cpp
-std::vector<double> get_all_locations_cpp(double max_sec, const std::vector<double>& times, const std::vector<double>& antennae, const Rcpp::NumericMatrix& site_map);
-RcppExport SEXP _stickleR_get_all_locations_cpp(SEXP max_secSEXP, SEXP timesSEXP, SEXP antennaeSEXP, SEXP site_mapSEXP) {
+std::vector<double> get_all_locations_cpp(double max_sec, const std::vector<double>& times, const std::vector<double>& antennae, const Rcpp::NumericMatrix& site_map, double prev_day_location);
+RcppExport SEXP _stickleR_get_all_locations_cpp(SEXP max_secSEXP, SEXP timesSEXP, SEXP antennaeSEXP, SEXP site_mapSEXP, SEXP prev_day_locationSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,7 +20,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::vector<double>& >::type times(timesSEXP);
     Rcpp::traits::input_parameter< const std::vector<double>& >::type antennae(antennaeSEXP);
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type site_map(site_mapSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_all_locations_cpp(max_sec, times, antennae, site_map));
+    Rcpp::traits::input_parameter< double >::type prev_day_location(prev_day_locationSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_all_locations_cpp(max_sec, times, antennae, site_map, prev_day_location));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -40,7 +41,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_stickleR_get_all_locations_cpp", (DL_FUNC) &_stickleR_get_all_locations_cpp, 4},
+    {"_stickleR_get_all_locations_cpp", (DL_FUNC) &_stickleR_get_all_locations_cpp, 5},
     {"_stickleR_make_matrix_class", (DL_FUNC) &_stickleR_make_matrix_class, 4},
     {NULL, NULL, 0}
 };

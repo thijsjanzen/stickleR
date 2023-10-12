@@ -30,7 +30,8 @@ double find_site(const double& antenna,
 std::vector<double> get_all_locations_cpp(double max_sec,
                                       const std::vector<double>& times,
                                       const std::vector<double>& antennae,
-                                      const Rcpp::NumericMatrix& site_map) {
+                                      const Rcpp::NumericMatrix& site_map,
+                                      double prev_day_location) {
 
   std::vector<double> sites(antennae.size(), 0);
   for (size_t i = 0; i < antennae.size(); ++i) {
@@ -40,7 +41,7 @@ std::vector<double> get_all_locations_cpp(double max_sec,
   std::vector<double> out(max_sec, 0);
   // starting bit, extrapolating from first read
   for (int t = 0; t < times.front(); ++t) {
-    out[t] = sites.front();
+    out[t] = prev_day_location;
   }
 
   // in between:

@@ -4,7 +4,7 @@
 \alias{pick_closest}
 \title{function to infer per second the nearest location}
 \usage{
-pick_closest(dataset)
+pick_closest(dataset, prev_day_location)
 }
 \arguments{
 \item{dataset}{dataset having at least columns 'Date', 'Time', 'Unit number',
