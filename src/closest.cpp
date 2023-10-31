@@ -20,10 +20,11 @@ double find_site(const double& antenna,
 }
 
 //' function to get all locations
-//' @param max_sec maxsec
-//' @param times tt
-//' @param antennae aa
-//' @param site_map sm
+//' @param max_sec maximum number of seconds
+//' @param times time points
+//' @param antennae vector of antennae
+//' @param site_map site map
+//' @param prev_day_location last known location at the previous day.
 //' @return vector of sites
 //' @export
 // [[Rcpp::export]]

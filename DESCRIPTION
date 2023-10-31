@@ -1,18 +1,16 @@
 Type: Package
 Package: stickleR
 Title: Analyze data
-Version: 0.3.0
+Version: 0.4.0
 Author: Thijs Janzen
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line) Use four
     spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: GPL-3
 Depends:
     R (>= 3.5.0),
     Rcpp
 Imports: 
-    dplyr,
-    magrittr,
     tibble
 LinkingTo: 
     Rcpp

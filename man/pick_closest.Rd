@@ -9,6 +9,8 @@ pick_closest(dataset, prev_day_location)
 \arguments{
 \item{dataset}{dataset having at least columns 'Date', 'Time', 'Unit number',
 and 'Transponder code'}
+
+\item{prev_day_location}{location at the end of the previous day.}
 }
 \value{
 tibble

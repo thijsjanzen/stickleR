@@ -7,14 +7,16 @@
 make_matrix_class(times, location, fish, num_fish)
 }
 \arguments{
-\item{times}{tt}
+\item{times}{vector of times}
 
-\item{location}{location}
+\item{location}{vector of locations}
 
-\item{fish}{fish}
+\item{fish}{vector of fish}
+
+\item{num_fish}{number of fish}
 }
 \value{
-vector of sites
+matrix
 }
 \description{
 function to get all locations

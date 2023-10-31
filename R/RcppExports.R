@@ -2,10 +2,11 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' function to get all locations
-#' @param max_sec maxsec
-#' @param times tt
-#' @param antennae aa
-#' @param site_map sm
+#' @param max_sec maximum number of seconds
+#' @param times time points
+#' @param antennae vector of antennae
+#' @param site_map site map
+#' @param prev_day_location last known location at the previous day.
 #' @return vector of sites
 #' @export
 get_all_locations_cpp <- function(max_sec, times, antennae, site_map, prev_day_location) {
@@ -13,10 +14,11 @@ get_all_locations_cpp <- function(max_sec, times, antennae, site_map, prev_day_l
 }
 
 #' function to get all locations
-#' @param times tt
-#' @param location location
-#' @param fish fish
-#' @return vector of sites
+#' @param times vector of times
+#' @param location vector of locations
+#' @param fish vector of fish
+#' @param num_fish number of fish
+#' @return matrix
 #' @export
 make_matrix_class <- function(times, location, fish, num_fish) {
     .Call(`_stickleR_make_matrix_class`, times, location, fish, num_fish)

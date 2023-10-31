@@ -7,13 +7,15 @@
 get_all_locations_cpp(max_sec, times, antennae, site_map, prev_day_location)
 }
 \arguments{
-\item{max_sec}{maxsec}
+\item{max_sec}{maximum number of seconds}
 
-\item{times}{tt}
+\item{times}{time points}
 
-\item{antennae}{aa}
+\item{antennae}{vector of antennae}
 
-\item{site_map}{sm}
+\item{site_map}{site map}
+
+\item{prev_day_location}{last known location at the previous day.}
 }
 \value{
 vector of sites

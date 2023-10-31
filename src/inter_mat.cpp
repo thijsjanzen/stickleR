@@ -1,7 +1,6 @@
 #include <Rcpp.h>
 #include <vector>
 
-
 struct room {
   room() {
     double max_t = 1 + 3600 * 24;
@@ -47,10 +46,11 @@ void vector_to_numericmatrix(const std::vector< std::vector< double >>& v,
 
 
 //' function to get all locations
-//' @param times tt
-//' @param location location
-//' @param fish fish
-//' @return vector of sites
+//' @param times vector of times
+//' @param location vector of locations
+//' @param fish vector of fish
+//' @param num_fish number of fish
+//' @return matrix
 //' @export
 // [[Rcpp::export]]
 Rcpp::NumericMatrix make_matrix_class(const std::vector<double>& times,
@@ -89,6 +89,3 @@ Rcpp::NumericMatrix make_matrix_class(const std::vector<double>& times,
 
   return out;
 }
-
-
-
