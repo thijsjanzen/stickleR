@@ -7,7 +7,7 @@
 find_fuzzy_match <- function(focal_fish, fish_names) {
 
   fuz_match <- function(y) {
-    return(adist(focal_fish, y))
+    return(utils::adist(focal_fish, y))
   }
 
   ax <- sapply(fish_names, fuz_match)
