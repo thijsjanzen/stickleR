@@ -17,8 +17,8 @@ struct room {
   void update_interaction_matrix(std::vector< std::vector< double >>* im) {
       for (const auto& e : entries) {
         if (!e.empty()) {
-          for (int i = 0; i < e.size(); ++i) {
-            for (int j = i; j < e.size(); ++j) {
+          for (size_t i = 0; i < e.size(); ++i) {
+            for (size_t j = i; j < e.size(); ++j) {
               auto a = e[i];
               auto b = e[j];
               if (a != b) {
@@ -69,7 +69,7 @@ Rcpp::NumericMatrix make_matrix_class(const std::vector<double>& times,
   int updateFreq = times.size() / 20;
   if(updateFreq < 1) updateFreq = 1;
 
-  for (int i = 0; i < times.size(); ++i) {
+  for (size_t i = 0; i < times.size(); ++i) {
     if (i % updateFreq == 0) {
       Rcpp::Rcout << "**";
       Rcpp::checkUserInterrupt();
