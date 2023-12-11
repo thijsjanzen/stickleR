@@ -28,10 +28,10 @@ double find_site(const double& antenna,
 //' @export
 // [[Rcpp::export]]
 std::vector<double> get_all_locations_cpp(double max_sec,
-                                      const std::vector<double>& times,
-                                      const std::vector<double>& antennae,
-                                      const Rcpp::NumericMatrix& site_map,
-                                      double prev_day_location) {
+                                          const std::vector<double>& times,
+                                          const std::vector<double>& antennae,
+                                          const Rcpp::NumericMatrix& site_map,
+                                          double prev_day_location) {
 
   std::vector<double> sites(antennae.size(), 0);
   for (size_t i = 0; i < antennae.size(); ++i) {

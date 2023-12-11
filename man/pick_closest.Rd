@@ -4,11 +4,22 @@
 \alias{pick_closest}
 \title{function to infer per second the nearest location}
 \usage{
-pick_closest(dataset, prev_day_location)
+pick_closest(
+  dataset,
+  prev_day_location = NA,
+  used_site_map,
+  extrapolate_until_midnight = TRUE
+)
 }
 \arguments{
 \item{dataset}{dataset having at least columns 'Date', 'Time', 'Unit number',
 and 'Transponder code'}
+
+\item{prev_day_location}{location of fish at previous day (if known)}
+
+\item{used_site_map}{site map, result of load(site_map) or load(review_map)}
+
+\item{extrapolate_until_midnight}{should the data extrapolate until midnight?}
 }
 \value{
 tibble

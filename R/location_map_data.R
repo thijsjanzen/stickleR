@@ -1,5 +1,6 @@
-#' @name location_map
-#' @title map translating sequences of antennae reads into locations
+#' @name review_map
+#' @title map translating sequences of antennae reads into locations, used for
+#' the review paper
 #' @description a table that can be used to translate antennae reads into
 #' locations and movement
 #' @format a tibble
