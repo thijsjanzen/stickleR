@@ -8,7 +8,9 @@ extract_data <- function(dataset, location_map, review_data = FALSE) {
   pb <- txtProgressBar(max = length(unique(dataset$`Transponder code`)), style = 3)
   cnt <- 1
 
-  all_dates <- sort(unique(dataset$Date))
+  all_dates <- unique(dataset$Date)
+  all_dates2 <- lubridate::dmy(all_dates)
+  all_dates <- all_dates[order(all_dates2)]
 
   all_results <- c()
 
