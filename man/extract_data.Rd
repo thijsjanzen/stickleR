@@ -4,14 +4,14 @@
 \alias{extract_data}
 \title{function to convert read data into per second score}
 \usage{
-extract_data(dataset, location_map, review_data = FALSE)
+extract_data(dataset, location_map, fish_id_list)
 }
 \arguments{
 \item{dataset}{data set}
 
 \item{location_map}{map to transcode transponders to ponds}
 
-\item{review_data}{flag to indicate what experiment we are transcoding}
+\item{fish_id_list}{data frame containing fish ids}
 }
 \description{
 function to convert read data into per second score

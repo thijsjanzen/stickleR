@@ -1,9 +1,9 @@
 #' function to convert read data into per second score
 #' @param dataset data set
 #' @param location_map map to transcode transponders to ponds
-#' @param review_data flag to indicate what experiment we are transcoding
+#' @param fish_id_list data frame containing fish ids
 #' @export
-extract_data <- function(dataset, location_map, review_data = FALSE) {
+extract_data <- function(dataset, location_map, fish_id_list) {
 
   pb <- txtProgressBar(max = length(unique(dataset$`Transponder code`)), style = 3)
   cnt <- 1
@@ -14,14 +14,19 @@ extract_data <- function(dataset, location_map, review_data = FALSE) {
 
   all_results <- c()
 
-  for (focal_fish in unique(dataset$`Transponder code`)) {
+  for (focal_fish in fish_id_list$tag_id) {
     fish_results <- c()
+    experiment <- fish_id_list$Experiment[fish_id_list$tag_id == focal_fish]
+    prev_day_location <- 5
+    if (experiment == "B") prev_day_location <- 10
+
     for (i in 1:length(all_dates)) {
       focal_date <- all_dates[i]
       day_subset <- subset(dataset, dataset$Date == focal_date)
 
       focal_data <- subset(day_subset, day_subset$`Transponder code` == focal_fish)
-      prev_day_location <- NA
+
+
       if (i > 1) {
         prev_day_dataset <- subset(fish_results, fish_results$date == all_dates[i - 1])
         prev_day_fish <- subset(prev_day_dataset, prev_day_dataset$fish == focal_fish)
@@ -37,13 +42,6 @@ extract_data <- function(dataset, location_map, review_data = FALSE) {
         colnames(all_seconds) <- c("times", "location")
         all_seconds <- tibble::as_tibble(all_seconds)
       } else {
-        # this flag indicates that the data should be extrapolated until
-        # midnight
-        # normally, this is TRUE.
-     #   midnight <- TRUE
-     #   if (review_data && i == 2) midnight <- FALSE
-
-
         all_seconds <- pick_closest(focal_data,
                                     prev_day_location,
                                     as.matrix(location_map))
