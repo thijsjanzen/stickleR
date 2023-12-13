@@ -8,8 +8,8 @@
 #' @param site_map sm
 #' @return vector of sites
 #' @export
-get_all_locations_cpp <- function(max_sec, times, antennae, site_map, prev_day_location) {
-    .Call(`_stickleR_get_all_locations_cpp`, max_sec, times, antennae, site_map, prev_day_location)
+get_all_locations_cpp <- function(start_time, end_time, times, antennae, site_map, prev_day_location) {
+    .Call(`_stickleR_get_all_locations_cpp`, start_time, end_time, times, antennae, site_map, prev_day_location)
 }
 
 #' function to get all locations

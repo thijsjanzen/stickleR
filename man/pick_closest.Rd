@@ -8,7 +8,8 @@ pick_closest(
   dataset,
   prev_day_location = NA,
   used_site_map,
-  extrapolate_until_midnight = TRUE
+  start_time,
+  end_time
 )
 }
 \arguments{
@@ -19,7 +20,9 @@ and 'Transponder code'}
 
 \item{used_site_map}{site map, result of load(site_map) or load(review_map)}
 
-\item{extrapolate_until_midnight}{should the data extrapolate until midnight?}
+\item{start_time}{starting time of recording}
+
+\item{end_time}{ending time of recording}
 }
 \value{
 tibble

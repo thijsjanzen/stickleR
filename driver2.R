@@ -1,22 +1,127 @@
-require(stickleR)
+require(tidyverse)
 
-vx <- readr::read_delim("/Users/thijsjanzen/Dropbox/projects/Jakob/stick2/20220513.CSV",
+# modify this path
+begin <- "/Users/thijsjanzen/MEGAsync2/Jakob/REVIEW/raw_reads"
+dd <- list.dirs(path = begin, recursive = TRUE)
+dd
+
+# modify this path
+time_data <- read_delim("/Users/thijsjanzen/MEGAsync2/Jakob/REVIEW/starting_times.csv",
                         delim = ";")
-vx <- dplyr::select(vx, c('Date', 'Time', 'Unit number', 'Transponder code'))
 
-all_results <- c()
-for (focal_fish in unique(vx$`Transponder code`)) {
-  focal_data <- subset(vx, vx$`Transponder code` == focal_fish)
+group_data <- read_delim("/Users/thijsjanzen/MEGAsync2/Jakob/REVIEW/group_overview_tj.csv")
+group_data <- group_data %>%
+  select(test_id, tag_id, Experiment)
 
-  # and now, we do not remove paired reads!
-  all_seconds <- pick_closest(focal_data)
-  all_seconds$fish = focal_fish
-  all_results <- rbind(all_results, all_seconds)
-  cat(focal_fish, "\n")
+require(stickleR)
+data(review_map)
+
+for (f in dd) {
+  if (f != begin) {
+    cat(f, "\n")
+    files <- list.files(path = f, recursive = TRUE, pattern = "*.CSV")
+
+    splt1 <- str_split(f, "_")
+    no2 <- tail(splt1[[1]], 1)
+    focal_number <- as.numeric(no2)
+
+
+
+    focal_data <- c()
+    for (x in files) {
+      vx <- read_delim(paste0(f,"/", x), delim = ";", show_col_types = FALSE)
+      focal_data <- rbind(focal_data, vx)
+    }
+
+    fish_id_subset <- subset(group_data,
+                             group_data$test_id == paste0("mixed", focal_number))
+
+
+    index <- which(time_data$X == focal_number)
+    focal_start_time <- time_data$Start_time_pond[index]
+    focal_start_time <- lubridate::ymd_hms(focal_start_time)
+    focal_end_time <- time_data$End_time_pond[index]
+    focal_end_time <- lubridate::ymd_hms(focal_end_time)
+
+    focal_data$complete_time <- lubridate::dmy_hms(paste(focal_data$Date, focal_data$Time))
+
+    #focal_data <- focal_data %>%
+    #  filter(complete_time >= focal_start_time &
+    #           complete_time <=  focal_end_time)
+
+
+    # now that we have our focal dataset, we can interpolate locations for
+    # every second:
+    transcribed_data <- stickleR::extract_data(dataset = focal_data,
+                                               location_map = as.matrix(review_map),
+                                               fish_id_list = fish_id_subset,
+                                               focal_start_time,
+                                               focal_end_time)
+
+    if (1 == 2) {
+      all_dates <- unique(transcribed_data$date)
+      transcribed_data %>%
+        filter(date == all_dates[1]) %>%
+        filter(times < 60000) %>%
+        ggplot(aes(x = times ,y = location, col = fish)) +
+        geom_line()
+    }
+
+    # remove NA entries:
+    transcribed_data <- transcribed_data %>% filter(!is.na(location))
+
+    # the 'times' column indicates the number of seconds counting since the start
+    # of the day (this was useful in the other analysis).
+    # To re-aquire the full time, we recalculate this with some lubridate magic:
+    transcribed_data$full_time <- lubridate::dmy_hms(paste(transcribed_data$date, " 00:00:00 UTC"))
+    transcribed_data$full_time <- transcribed_data$full_time + transcribed_data$times
+
+    transcribed_data$experiment <- 1
+    transcribed_data$experiment[transcribed_data$location > 5] <- 2
+
+    index <- which(time_data$X == focal_number)
+    focal_start_time <- time_data$Start_time_pond[index]
+    focal_start_time <- lubridate::ymd_hms(focal_start_time)
+    focal_end_time <- time_data$End_time_pond[index]
+    focal_end_time <- lubridate::ymd_hms(focal_end_time)
+
+    if (1 == 2) {
+      focal_dates <- sort(unique(transcribed_data$date))
+
+      transcribed_data %>%
+        filter(date == focal_dates[1]) %>%
+        filter(times < 60000) %>%
+        filter(experiment == 2) %>%
+        ggplot(aes(x = times, y = location, col = fish)) +
+        geom_line()
+
+      transcribed_data %>%
+        #filter(date == focal_dates[1]) %>%
+        #filter(times %in% seq(30000, 60000, by = 10)) %>%
+        filter(experiment == 1) %>%
+        mutate("jitter_location" = jitter(location)) %>%
+        #  mutate("jitter_location" = (location)) %>%
+        ggplot(aes(x = rev(full_time), y = jitter_location, col = fish, group = fish)) +
+        geom_line() +
+        geom_point() +
+        scale_color_manual(values = colors_used1) +
+        theme_classic() +
+        coord_flip() +
+        ylim(5.5, 0.5) +
+        ylab("Pond") +
+        xlab("Time in Experiment") +
+        ggtitle(exper_name)
+    }
+
+    transcribed_data <- transcribed_data %>%
+      filter(full_time >= focal_start_time &
+               full_time <=  focal_end_time)
+
+
+
+
+
+    out_file <- paste0(f, "/per_second.rds")
+    saveRDS(transcribed_data, file = out_file)
+  }
 }
-
-all_results2 <- subset(all_results, all_results$times > 10000 & all_results$times < 11000 )
-
-inter_mat <- stickleR::create_interaction_matrix(all_results2)
-
-inter_mat[1, 1]

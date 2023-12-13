@@ -4,16 +4,23 @@
 \alias{get_all_locations_cpp}
 \title{function to get all locations}
 \usage{
-get_all_locations_cpp(max_sec, times, antennae, site_map, prev_day_location)
+get_all_locations_cpp(
+  start_time,
+  end_time,
+  times,
+  antennae,
+  site_map,
+  prev_day_location
+)
 }
 \arguments{
-\item{max_sec}{maxsec}
-
 \item{times}{tt}
 
 \item{antennae}{aa}
 
 \item{site_map}{sm}
+
+\item{max_sec}{maxsec}
 }
 \value{
 vector of sites

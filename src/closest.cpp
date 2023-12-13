@@ -27,7 +27,8 @@ double find_site(const double& antenna,
 //' @return vector of sites
 //' @export
 // [[Rcpp::export]]
-std::vector<double> get_all_locations_cpp(double max_sec,
+std::vector<double> get_all_locations_cpp(double start_time,
+                                          double end_time,
                                           const std::vector<double>& times,
                                           const std::vector<double>& antennae,
                                           const Rcpp::NumericMatrix& site_map,
@@ -38,24 +39,31 @@ std::vector<double> get_all_locations_cpp(double max_sec,
     sites[i] = find_site(antennae[i], site_map);
   }
 
-  std::vector<double> out(max_sec, 0);
-  // starting bit, extrapolating from first read
-  for (int t = 0; t < times.front(); ++t) {
-    out[t] = prev_day_location;
-  }
 
-  // in between:
-  for (size_t i = 0; i < times.size() - 1; ++i) {
-    auto start = times[i];
-    auto end = times[i + 1];
-    for (size_t j = start; j < end; ++j) {
-      out[j] = sites[i];
-    }
-  }
+  double total_time_steps = end_time - start_time + 1;
+  std::vector<double> out;
+  out.reserve(total_time_steps);
+  out.push_back(prev_day_location); //out[0] = prev_day_location;
 
-  // end read:
-  for (int t = times.back(); t < max_sec; ++t) {
-    out[t] = sites.back();
+
+  for (size_t i = start_time + 1; i <= end_time; ++i) {
+      auto first_equal_or_greater = std::lower_bound(times.begin(), times.end(), i);
+
+      if (first_equal_or_greater == times.end()) {
+        // here we lack data past the end of the recording, but we can extrapolate from the last known location
+        out.push_back(sites.back());
+      } else {
+        if (*first_equal_or_greater > i) first_equal_or_greater--;
+
+        auto index = std::distance(times.begin(), first_equal_or_greater);
+
+        if (times[index] < start_time) {
+          // in case we recover a time point before the start of the experiment, we record the known starting location
+          out.push_back(prev_day_location);
+        } else {
+          out.push_back(sites[index]);
+        }
+      }
   }
 
   return out;
